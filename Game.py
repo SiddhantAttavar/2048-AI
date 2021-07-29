@@ -16,7 +16,7 @@ def runGame(playerIsHuman):
     score = 0
     scoreLabel = Label(
         root,
-        width = 20,
+        width = 19,
         height = 1,
         justify = CENTER,
         font = ('Verdana', 40, 'bold'),

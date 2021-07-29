@@ -1,15 +1,9 @@
 # 2048 AI
-This is a algorithm, written in Python, which plays the game [2048](https://en.wikipedia.org/wiki/2048_(video_game)). It reaches an average score of 8,000 and high score of 15,000.
+This is a algorithm, written in Python, which plays the game [2048](https://en.wikipedia.org/wiki/2048_(video_game)). It reaches the 2048 tile about 60% of the time and 1024 tile nearly 100% of the time.
 
 ![Image](/screenshot.png)
 
-The algorithm is based on the [minimax](https://en.wikipedia.org/wiki/Minimax) algorithm. At each move, the algorithm looks into all possible moves, to a certain depth, and chooses the one with the best score. There is an element of randomness in the game, about where the 2s and 4s will appear on the board, so the algorithm take the average of scores for each possible position of the new tile.
-
-The score of each move is determined by a heuristic function. This function returns a score for a given game board which is based on common strategies for the game like:
- - Increasing the score
- - Placing higher value tiles in a single corner
- - Sorting tiles in increasing order so that it will be easy to merge them
- - Keeping higher numbers of empty tiles
+The algorithm is based on the [Monte Carlo Tree Search](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search) algorithm. At each move, the algorithm performs a number of simulations, each of which is a random game of 2048. The algorithm then selects the move that has the best score.
 
 ## Prerequisites <a name = "prerequisites"></a>
  - Python 3+
