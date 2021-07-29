@@ -65,8 +65,8 @@ def runGame(playerIsHuman):
             grid[row][col].grid()
 
     # Start the game and add 4 nums
-    addNewNum()
-    addNewNum()
+    addNewNum(board, False)
+    addNewNum(board, True)
     if playerIsHuman:
         root.mainloop()
     
@@ -84,7 +84,7 @@ def displayBoard():
     # Disply the updated score
     scoreLabel.configure(text = f'Score: {score}')
 
-def addNewNum():
+def addNewNum(board, display):
     # Add 2 new numbers on to the board
     # There is a 1 in 10 chance of the number being 4
     # And a 9 in 10 chance of the number being 2
@@ -101,7 +101,8 @@ def addNewNum():
         newNumX, newNumY = emptyCells.pop(randrange(len(emptyCells)))
         board[newNumX][newNumY] = 2 #4 if random() < 0.1 else 2
     
-    displayBoard()
+    if display:
+        displayBoard()
 
 def onKeyPress(event):
     global gameOver, board, score
@@ -113,7 +114,7 @@ def onKeyPress(event):
     # Call the function corresponding to the key
     board, score, flag = KEY_FUNCTIONS[event.keysym](board, score)
     if flag:
-        addNewNum()
+        addNewNum(board, True)
         checkGameOver(board)
 
 def checkGameOver(board):

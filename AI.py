@@ -2,7 +2,7 @@
 from threading import Thread
 from time import sleep, time
 from copy import deepcopy
-from random import sample
+from random import sample, choice
 
 import Game
 
@@ -81,14 +81,46 @@ def move(board, depth, alpha, score):
     
     return bestMove, bestScore
 
+def moveMonteCarlo(board, score):
+    global debug, possibleMoves, MAX_SEARCH_DEPTH, MAX_SEARCH_MOVES
+
+    moveScores = [0] * len(possibleMoves)
+    for moveCount, res in enumerate(doMove(board, score) for doMove in possibleMoves):
+        nextBoard, nextScore, nextFlag = res
+
+        if not nextFlag:
+            # The move was not played
+            continue
+
+        for _ in range(MAX_SEARCH_MOVES):
+            searchDepth = 1
+            currBoard = deepcopy(nextBoard)
+            flag = True
+            currScore = nextScore
+
+            while flag and searchDepth < MAX_SEARCH_DEPTH:
+                searchDepth += 1
+                Game.addNewNum(currBoard, False)
+                currBoard, currScore, flag = choice(possibleMoves)(currBoard, currScore)
+
+            moveScores[moveCount] += currScore
+    
+    topMove = 0
+    for moveCount in range(len(possibleMoves)):
+        if moveScores[topMove] < moveScores[moveCount]:
+            topMove = moveCount
+    
+    return topMove
+
 def startAI():
     global debug
     while not Game.gameOver:
         startTime = time()
-        bestMove, _ = move(Game.board, MAX_DEPTH, 0, Game.score)
+        #bestMove, _ = move(Game.board, MAX_DEPTH, 0, Game.score)
+        bestMove = moveMonteCarlo(Game.board, Game.score)
         Game.board, Game.score, _ = possibleMoves[bestMove](Game.board, Game.score)
         try:
-            Game.addNewNum()
+            Game.addNewNum(Game.board, True)
         except:
             return
         Game.checkGameOver(Game.board)
@@ -102,6 +134,8 @@ def runAI():
     root.mainloop()
 
 # AI Constants
+MAX_SEARCH_DEPTH = 5
+MAX_SEARCH_MOVES = 50
 MAX_DEPTH = 3
 MAX_CHILDREN = 14
 FREE_TILE_WEIGHT = 8
