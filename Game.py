@@ -16,7 +16,7 @@ def runGame(playerIsHuman):
     score = 0
     scoreLabel = Label(
         root,
-        width = 19,
+        width = 20,
         height = 1,
         justify = CENTER,
         font = ('Verdana', 40, 'bold'),
@@ -118,16 +118,18 @@ def onKeyPress(event):
         checkGameOver(board)
 
 def checkGameOver(board):
-    global gameOver
-    # Check if the player has won the game
-    for row in range(CELL_COUNT):
-        if 2048 in board[row]:
-            scoreLabel.configure(
-                text = f'You win! Score: {score}',
-                font = ('Verdana', 30, 'bold')
-            )
-            gameOver = True
-            return
+    global gameOver, STOP_AT_2048
+
+    if STOP_AT_2048:
+        # Check if the player has won the game
+        for row in range(CELL_COUNT):
+            if 2048 in board[row]:
+                scoreLabel.configure(
+                    text = f'You win! Score: {score}',
+                    font = ('Verdana', 30, 'bold')
+                )
+                gameOver = True
+                return
     
     # Check if the game is over
     flag = False
@@ -151,10 +153,6 @@ def checkGameOver(board):
             break
     
     if not flag:
-        scoreLabel.configure(
-            text = f'You Lose. Score: {score}',
-            font = ('Verdana', 40)
-        )
         gameOver = True
 
 def moveUp(board, score):
@@ -297,6 +295,7 @@ BACKGROUND_COLOR = '#BBADA0'
 CELL_PADDING = 10
 
 # Constants for game
+STOP_AT_2048 = False
 CELL_COUNT = 4
 CELL_SIZE = 100
 TEXT_COLOR = '#776E64'
