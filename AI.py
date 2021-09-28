@@ -124,7 +124,7 @@ def startAI():
         except:
             return
         Game.checkGameOver(Game.board)
-        sleep(0.05 - min(0.05, time() - startTime))
+        sleep(SLEEP_TIME - min(SLEEP_TIME, time() - startTime))
 
 def runAI():
     # Run the game with algorithm
@@ -134,6 +134,7 @@ def runAI():
     root.mainloop()
 
 # AI Constants
+SLEEP_TIME = 0.05
 MAX_SEARCH_DEPTH = 7
 MAX_SEARCH_MOVES = 30
 MAX_DEPTH = 3
